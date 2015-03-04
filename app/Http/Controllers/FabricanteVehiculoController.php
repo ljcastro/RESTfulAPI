@@ -11,6 +11,11 @@ use App\Vehiculo;
 
 class FabricanteVehiculoController extends Controller {
 
+	public function __construct()
+	{
+		$this->middleware('auth.basic', ['only'=>['store','update','destroy']]);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -43,9 +48,30 @@ class FabricanteVehiculoController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request, $id)
 	{
-		//
+		//fabricante_id
+		//serie (autoincremental) no se necesita
+		//color
+		//cilindrada
+		//potencia
+		//peso
+
+		if(!$request->input('color') || !$request->input('cilindrada') || !$request->input('potencia') || !$request->input('peso'))
+		{
+			return response()->json(['mensaje' => 'No se pudieron procesar los valores','codigo' => 422],422);
+		}
+
+		$fabricante = Fabricante::find($id);
+		
+		if(!$fabricante)
+		{
+			return response()->json(['mensaje' => 'No se encuentra el fabricante asociado','codigo' => 404],404);		
+		}
+
+		$fabricante->vehiculos()->create($request->all());
+
+		return response()->json(['mensaje' => 'Vehiculo insertado'],201);
 	}
 
 	/**
