@@ -11,6 +11,6 @@ class Vehiculo extends Model
 
 	public function fabricantes()
 	{
-		$this->belongsTo('Fabricante');
+		return $this->belongsTo('App\Fabricante');
 	}
 }
