@@ -102,9 +102,78 @@ class FabricanteVehiculoController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($idFabricante, $idVehiculo)
+	public function update(Request $request, $idFabricante, $idVehiculo)
 	{
-		//
+		$metodo = $request->method();
+		$fabricante = Fabricante::find($idFabricante);
+
+		if(!$fabricante)
+		{
+			return response()->json(['mensaje' => 'No se encuentra ese fabricante', 'codigo'=>404],404);		
+		}
+
+		$vehiculo = $fabricante->vehiculos()->find($idVehiculo);
+
+		if(!$vehiculo)
+		{
+			return response()->json(['mensaje' => 'No se encuentra el vehiculo asociado a ese fabricante', 'codigo'=>404],404);		
+		}
+
+		$color = $request->input('color');
+		$cilindrada = $request->input('cilindrada');
+		$potencia = $request->input('potencia');
+		$peso = $request->input('peso');
+
+		if($metodo === 'PATCH')
+		{
+			$bandera = false;
+
+			if($color != null && $color != '')
+			{
+				$vehiculo->color = $color;
+				$bandera = true;
+			}
+			
+			if($cilindrada != null && $cilindrada != '')
+			{
+				$vehiculo->cilindrada = $cilindrada;
+				$bandera = true;
+			}
+
+			if($potencia != null && $potencia != '')
+			{
+				$vehiculo->potencia = $potencia;
+				$bandera = true;
+			}
+
+			if($peso != null && $peso != '')
+			{
+				$vehiculo->peso = $peso;
+				$bandera = true;
+			}
+
+			if($bandera)
+			{
+				$vehiculo->save();
+				return response()->json(['mensaje' => 'Vehiculo actualizado (PATCH)'],200);
+			}
+
+			return response()->json(['mensaje' => 'No se modificó ningún vehiculo'],200);
+		}
+
+		if(!$color || !$cilindrada || !$potencia || !$peso)
+		{
+			return response()->json(['mensaje' => 'No se pudieron procesar los valores','codigo' => 422],422);
+		}
+
+		$vehiculo->color = $color;
+		$vehiculo->cilindrada = $cilindrada;
+		$vehiculo->potencia = $potencia;
+		$vehiculo->peso = $peso;
+
+		$vehiculo->save();
+
+		return response()->json(['mensaje' => 'Vehiculo actualizado (PUT)'],200);		
 	}
 
 	/**

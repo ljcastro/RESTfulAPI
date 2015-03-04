@@ -77,21 +77,30 @@ class FabricanteController extends Controller {
 
 		if($metodo === 'PATCH')
 		{
+
+			$bandera = false;
+
 			$nombre = $request->input('nombre');
 			if($nombre != null && $nombre != '')
 			{
 				$fabricante->nombre = $nombre;
+				$bandera = true;
 			}
 			
 			$telefono = $request->input('telefono');
 			if($telefono != null && $telefono != '')
 			{
 				$fabricante->telefono = $telefono;
+				$bandera = true;
 			}
 
-			$fabricante->save();		
+			if($bandera)
+			{
+				$fabricante->save();		
+				return response()->json(['mensaje' => 'Fabricante actualizado (PATCH)'],200);				
+			}
 
-			return response()->json(['mensaje' => 'Vehiculo actualizado (PATCH)'],200);
+			return response()->json(['mensaje' => 'No se modificó ningún fabricante (PATCH)'],200);
 		}
 
 		$nombre = $request->input('nombre');
@@ -107,7 +116,7 @@ class FabricanteController extends Controller {
 
 		$fabricante->save();
 
-		return response()->json(['mensaje' => 'Vehiculo actualizado (PUT)'],200);
+		return response()->json(['mensaje' => 'Fabricante actualizado (PUT)'],200);
 	}
 
 	/**
