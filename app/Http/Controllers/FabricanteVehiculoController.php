@@ -33,15 +33,6 @@ class FabricanteVehiculoController extends Controller {
 		return response()->json(['datos' => $fabricante->vehiculos],200);
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create($id)
-	{
-		return 'mostrando formulario para agregar vehiculo al fabricante '.$id;
-	}
 
 	/**
 	 * Store a newly created resource in storage.
@@ -74,27 +65,6 @@ class FabricanteVehiculoController extends Controller {
 		return response()->json(['mensaje' => 'Vehiculo insertado'],201);
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($idFabricante, $idVehiculo)
-	{
-		return 'mostrando vehiculo '.$idVehiculo.' del fabricante '.$idFabricante;
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($idFabricante, $idVehiculo)
-	{
-		return 'mostando formulario para editar el vehiculo '.$idVehiculo.' del fabricante '.$idFabricante;
-	}
 
 	/**
 	 * Update the specified resource in storage.
